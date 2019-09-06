@@ -1,0 +1,21 @@
+path:
+  log_path: "logs/"
+  device_file_path: "data/device_file/"
+  person_file_path: "data/person_file/"
+handshake_key: "ping" #must same as Android's handshake_key
+response_key: "PONG" #must same as Android's response_key
+begin_key: "" #linux,docker: please set "",Windows: must different with handshake_key
+db:
+  mongo:
+    url: "mongodb://127.0.0.1:27017"
+    db_name: "db_seeta_device"
+mqtt:
+  user: "admin"
+  password: "public"
+  protocol: "tcp"
+  ip: "192.168.0.18" #can not use loopback address,Android can access this address
+  tcp_port: "1883"
+  server_port: "18083"
+  status_topic: "device_status"
+  log_topic: "device_log"
+  version_topic: "device_version"
