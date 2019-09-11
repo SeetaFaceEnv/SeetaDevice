@@ -39,7 +39,7 @@ resource文件夹说明：
         ├── config_debug.yaml
         └── config_release.yaml
 ```
-  
+
   auth.yaml：业务系统ip白名单，只允许名单内的业务系统访问，支持文件热更新
   config_debug.yaml,config_release.yaml程序配置文件包含:
 
@@ -47,11 +47,12 @@ resource文件夹说明：
     * mqtt连接配置
     * udp组播接收和返回key值
     * 日志和数据文件路径
+
   
-  
+
 具体见下文
-  
-    
+
+
 ```
     path:
       log_path: "logs/" #日志路径
@@ -78,10 +79,10 @@ resource文件夹说明：
 ```
 
  1 物理部署（根据系统选用linux或者Windows的二进制文件） 
- 
- 
+
+
    ```
-   运行程序之前需修改resource文件夹内配置文件和权限文件
+   运行程序之前需修改resource文件夹内配置文件和权限文件，二进制文件与resource文件夹需在同级目录运行
  
    命令说明：
    版本显示：<binary_file> version
@@ -95,7 +96,7 @@ resource文件夹说明：
    <port>:监听端口，udp组播端口必须与http服务端口相同，如果不同则组播服务必须指定-a参数
    <addr>:udp组播返回安卓的地址，如果两者端口或ip不同，则必须指定该地址，如:127.0.0.1:7878
    ```
- 
+
 2 docker部署 
 
 > 1 拉取镜像
@@ -108,7 +109,7 @@ resource文件夹说明：
 ```
 docker run -d --name <container_name> --restart=always --net=host -v <resource_path>:/code/resource -v <data_path>:/code/data -v <logs_path>:/code/logs seetaresearch/seeta_device:v0.4.8 <command>
 ```
- 
+
 参数说明：
 
 ```
@@ -141,6 +142,10 @@ docker run -d --name <container_name> --restart=always --net=host -v <resource_p
 
 ![系统架构图](./image/struct.png)
 
+* 安卓设备与平台之间通过udp组播的方式进行服务发现，两者通过http协议和mqtt协议进行通信
+* 安卓设备和平台的mqtt通信通过emq中间件来进行转发
+* 业务系统与平台之间通过http协议进行通信
+
 ### 2.2 系统运行流程
 ![系统运行流程图](./image/process.png)
 
@@ -156,10 +161,14 @@ docker run -d --name <container_name> --restart=always --net=host -v <resource_p
 * 调用人员信息接口（添加人员、添加人员照片、删除人员、删除人员照片、编辑人员等）管理人员信息
 
 ### 2.3 系统部署
-	
+
 ### 2.3 设备状态变更说明
 
 ![设备状态说明](./image/device_backend.png)
+
+* 设备进行服务发现之后，设备从未连接状态变为未知设备
+* 调用设备添加接口之后，设备从未知设备变为已知设备
+* 调用设备删除接口之后，如果设备在线，设备则变为未知设备,可以重新进行服务发现，否则认为该设备已不存在，进行删除设备
 
 ### 2.4 回调机制
 
@@ -169,7 +178,7 @@ docker run -d --name <container_name> --restart=always --net=host -v <resource_p
 
 ### 2.5 人脸识别说明
 
-平台可通过SeetaCloud进行人脸识别，即系统参数中设置seetacloud_url，如果不设置，则直接添加照片不进行人脸识别。
+平台可通过SeetaCloud(SeetaCloud是一个人脸识别服务，该服务用来上传的照片进行人脸识别，分为云端服务和本地服务)进行人脸识别，即系统参数中设置seetacloud_url，如果不设置，则直接添加照片不进行人脸识别。
 
 seetacloud_cloud分为如下两类：
 1. 服务器本地部署的SeetaCloud，如："http(s)://ip:port/seetacloud/cpp/detect"
