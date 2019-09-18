@@ -10,8 +10,8 @@
 #### 1.1.1 系统运行说明
 
 * 系统依赖于Emq、MongoDB运行
-* 系统根据环境变量(seeta_device_mode)选择配置文件，支持debug,release,test
-* 系统使用可信地址列表(resource/config/auth.yaml)来控制请求，列表支持热更新
+* 系统根据程序命令行参数-m选择运行模式和配置文件，支持debug,release,test
+* 系统使用可信地址文件(在resource/config/auth.yaml文件中修改ip地址)来控制请求，文件支持热更新
 
 
 
