@@ -147,7 +147,9 @@ resource文件夹说明：
 2 docker-compose部署 
 
 1. 修改.env文件内路径和端口，resource/config/config_release.yaml文件内地址、端口和key（mongo的addr端口需和.env文件内的mongo端口一致，mqtt的ip需为本机IP地址）
-2. 运行程序 `docker-compose up -d`
+2. 运行程序 `docker-compose up -d` 运行结果如下：
+
+![docker-compose-result](image/docker-compose-result.png)
 
 ## 4. 系统接口文档
 
