@@ -1,0 +1,60 @@
+version: "3.7"
+services:
+  mongo:
+    container_name: mongo_${mode}
+    restart: always
+    image: mongo:4.2
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${mongo_user}
+      MONGO_INITDB_ROOT_PASSWORD: ${mongo_password}
+    volumes:
+      - ${mongo_db_path}:/data/db
+    ports:
+      - ${mongo_port}:27017
+  emqx:
+    container_name: emqx_${mode}
+    restart: always
+    image: emqx/emqx:v3.2.2
+    ports:
+      - ${emq_tcp}:1883
+      - ${emq_ws}:18083
+      - ${emq_dashboard}:8083
+  multicast:
+    image: seetaresearch/seeta_device:v0.5
+    container_name: multicast_${mode}
+    restart: always
+    network_mode: host
+    volumes:
+      - ${resource_path}:/code/resource
+      - ${logs_path}:/code/logs
+    command: ["./seeta_device","multicast","-m","release"]
+  server:
+    image: seetaresearch/seeta_device:v0.5
+    container_name: server_${mode}
+    restart: always
+    depends_on:
+      - emqx
+      - mongo
+    network_mode: host
+    environment:
+      MONGO_USER: ${mongo_user}
+      MONGO_PASSWORD: ${mongo_password}
+    volumes:
+      - ${resource_path}:/code/resource
+      - ${logs_path}:/code/logs
+      - ${data_path}:/code/data
+    command: ["./seeta_device","server","-m","release"]
+  timing:
+    image: seetaresearch/seeta_device:v0.5
+    container_name: timing_${mode}
+    restart: always
+    depends_on:
+      - mongo
+    environment:
+      MONGO_USER: ${mongo_user}
+      MONGO_PASSWORD: ${mongo_password}
+    volumes:
+      - ${resource_path}:/code/resource
+      - ${logs_path}:/code/logs
+      - ${data_path}:/code/data
+    command: ["./seeta_device","timing","-m","release"]

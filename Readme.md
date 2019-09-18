@@ -64,7 +64,7 @@
 
 ### 2.5 人脸检测说明
 
-平台可通过SeetaCloud（SeetaCloud为人脸识别服务，分为云端服务和本地服务，该服务可对上传的照片进行人脸识别）进行人脸检测，即系统参数中设置seetacloud_url，若不设置，则跳过人脸检测，直接添加照片。
+平台可通过SeetaCloud（SeetaCloud为人脸识别服务，分为[云端服务](https://cloud.seetatech.com/#/home)和本地服务，该服务可对上传的照片进行人脸识别）进行人脸检测，即系统参数中设置seetacloud_url，若不设置，则跳过人脸检测，直接添加照片。
 
 seetacloud_url分为如下两类：
 1. 服务器本地部署的SeetaCloud，如："http(s)://ip:port/seetacloud/cpp/detect"
@@ -123,11 +123,13 @@ resource文件夹说明：
    
 ```
 
- 1 物理部署（根据系统选用linux或者Windows的二进制文件） 
+1 物理部署（根据系统选用linux或者Windows的二进制文件） 
 
 
    ```
-   运行程序之前需修改resource文件夹内配置文件和权限文件，二进制文件与resource文件夹需在同级目录运行
+   运行程序之前需修改resource文件夹内配置文件和权限文件。
+   二进制文件与resource文件夹需在同级目录运行。
+   程序依赖于mongodb,emq运行，需提前安装mongodb和emq。
  
    命令说明：
    版本显示：<binary_file> version
@@ -142,44 +144,10 @@ resource文件夹说明：
    <addr>:udp组播返回安卓的地址，如果两者端口或ip不同，则必须指定该地址，如:127.0.0.1:7878
    ```
 
-2 docker部署 
+2 docker-compose部署 
 
-> 1 拉取镜像
-
-```
-  docker pull seetaresearch/seeta_device:v0.4.8
-```
-> 2 运行镜像
-
-```
-docker run -d --name <container_name> --restart=always --net=host -v <resource_path>:/code/resource -v <data_path>:/code/data -v <logs_path>:/code/logs seetaresearch/seeta_device:v0.4.8 <command>
-```
-
-参数说明：
-
-```
-  <container_name>:容器名称
-  <resource_path>:资源文件夹路径，外部resource文件夹路径，如未挂载，则使用内部resource文件夹，想要修改则进入运行容器内部修改，见下文描述
-  <data_path>:数据文件夹，程序运行过程中保存文件使用
-  <logs_path>:日志文件夹，程序运行中输出的日志
-  <command>:如果未指定命令，效果如同 ./seeta_device server -m release，如果想指定命令，具体见物理部署命令说明 
-```
-
-> 3 修改资源文件说明：
-
-```
-执行命令进入容器内：
- docker exec -it <container_name> /bin/sh
-修改配置文件
-   vi resource/config/config_release.yaml
-   vi resource/config/config_debug.yaml
-修改权限文件
-   vi resource/config/auth.yaml
-退出容器
-   exit
-重启容器
- docker restart <container_name>
-```
+1. 修改.env文件内路径和端口，resource/config/config_release.yaml文件内地址、端口和key（mongo的addr端口需和.env文件内的mongo端口一致，mqtt的ip需为本机IP地址）
+2. 运行程序 `docker-compose up -d`
 
 ## 4. 系统接口文档
 
