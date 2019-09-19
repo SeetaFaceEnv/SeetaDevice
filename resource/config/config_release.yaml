@@ -7,8 +7,10 @@ response_key: "PONG" #used for udp multicast, must same as Android's response_ke
 begin_key: "" #used for udp multicast, linux,docker: please set "",Windows: must different with handshake_key
 db:
   mongo: #mongodb
-    url: "mongodb://127.0.0.1:27017" #mongodb连接url
+    addr: "127.0.0.1:27018" #mongodb连接地址
     db_name: "db_seeta_device" #mongodb使用的数据库名
+    user_name: ""
+    password: ""
 mqtt:
   user: "admin" #mqtt admin
   password: "public" #mqtt password
