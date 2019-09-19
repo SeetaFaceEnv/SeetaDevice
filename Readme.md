@@ -123,7 +123,7 @@ resource文件夹说明：
    
 ```
 
-1 物理部署（根据系统选用linux或者Windows的二进制文件） 
+1、 物理部署（根据系统选用linux或者Windows的二进制文件） 
 
 
    ```
@@ -144,7 +144,7 @@ resource文件夹说明：
    <addr>:udp组播返回安卓的地址，如果两者端口或ip不同，则必须指定该地址，如:127.0.0.1:7878
    ```
 
-2 docker-compose部署 
+2、 docker-compose部署 
 
 1. 修改.env文件内路径和端口，resource/config/config_release.yaml文件内地址、端口和key（mongo的addr端口需和.env文件内的mongo端口一致，mqtt的ip需为本机IP地址）
 2. 运行程序 `docker-compose up -d` 运行结果如下：
