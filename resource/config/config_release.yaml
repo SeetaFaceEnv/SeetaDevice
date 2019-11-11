@@ -4,7 +4,6 @@ path:
   person_file_path: "data/person_file/" #人员相关文件路径
 handshake_key: "ping" #used for udp multicast, must same as Android's handshake_key
 response_key: "PONG" #used for udp multicast, must same as Android's response_key
-begin_key: "" #used for udp multicast, linux,docker: please set "",Windows: must different with handshake_key
 db:
   mongo: #mongodb
     addr: "127.0.0.1:27018" #mongodb连接地址

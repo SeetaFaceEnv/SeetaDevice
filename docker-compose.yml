@@ -14,11 +14,11 @@ services:
   emqx:
     container_name: emqx_${mode}
     restart: always
-    image: emqx/emqx:v3.2.2
+    image: emqx/emqx:v3.2.3
     ports:
       - ${emq_tcp}:1883
-      - ${emq_ws}:18083
-      - ${emq_dashboard}:8083
+      - ${emq_dashboard}:18083
+      - ${emq_ws}:8083
   multicast:
     image: seetaresearch/seeta_device:v0.5
     container_name: multicast_${mode}
