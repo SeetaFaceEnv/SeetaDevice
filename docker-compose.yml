@@ -20,7 +20,7 @@ services:
       - ${emq_dashboard}:18083
       - ${emq_ws}:8083
   multicast:
-    image: seetaresearch/seeta_device:v0.5
+    image: ${server_image}
     container_name: multicast_${mode}
     restart: always
     network_mode: host
@@ -29,7 +29,7 @@ services:
       - ${logs_path}:/code/logs
     command: ["./seeta_device","multicast","-m","release"]
   server:
-    image: seetaresearch/seeta_device:v0.5
+    image: ${server_image}
     container_name: server_${mode}
     restart: always
     depends_on:
@@ -45,7 +45,7 @@ services:
       - ${data_path}:/code/data
     command: ["./seeta_device","server","-m","release"]
   timing:
-    image: seetaresearch/seeta_device:v0.5
+    image: ${server_image}
     container_name: timing_${mode}
     restart: always
     depends_on:

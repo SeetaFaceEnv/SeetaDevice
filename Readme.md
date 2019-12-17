@@ -146,8 +146,32 @@ resource文件夹说明：
 
 2、 docker-compose部署 
 
-1. 修改.env文件内路径和端口，resource/config/config_release.yaml文件内地址、端口和key（mongo的addr端口需和.env文件内的mongo端口一致，mqtt的ip需为本机IP地址）
-2. 运行程序 `docker-compose up -d` 运行结果如下：
+1 部署docker
+```bash
+#安装
+sudo yum install -y yum-utils device-mapper-persistent-data lvm2
+sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+sudo yum makecache fast
+
+
+yum list docker-ce --showduplicates | sort -r #查看可用版本
+sudo yum install docker-ce-<VERSION STRING> # 安装19.03版本
+
+#启动
+sudo systemctl start docker
+sudo systemctl enable docker
+```
+
+2 部署docker-compose
+```bash
+sudo curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+```
+
+3 修改.env文件内路径和端口，resource/config/config_release.yaml文件内地址、端口和key（mongo的addr端口需和.env文件内的mongo端口一致，mqtt的ip需为本机IP地址）
+
+4 运行程序 `docker-compose up -d` 运行结果如下：
 
 ![docker-compose-result](image/docker-compose-result.png)
 
