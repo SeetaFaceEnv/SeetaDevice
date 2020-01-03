@@ -1,22 +1,24 @@
 path:
-  log_path: "logs/" #日志路径
-  device_file_path: "data/device_file/" #设备相关文件路径
-  person_file_path: "data/person_file/" #人员相关文件路径
-handshake_key: "ping" #used for udp multicast, must same as Android's handshake_key
-response_key: "PONG" #used for udp multicast, must same as Android's response_key
+  log_path: "logs/"
+  device_file_path: "data/device_file/"
+  person_file_path: "data/person_file/"
+handshake_key: "ping" #must same as Android's handshake_key
+response_key: "PONG" #must same as Android's response_key
+task_timeout: 16
+timing_report: false
 db:
-  mongo: #mongodb
-    addr: "127.0.0.1:27018" #mongodb连接地址
-    db_name: "db_seeta_device" #mongodb使用的数据库名
+  mongo:
+    addr: "127.0.0.1:27017"
+    db_name: "db_seeta_device"
     user_name: ""
     password: ""
 mqtt:
-  user: "admin" #mqtt admin
-  password: "public" #mqtt password
-  protocol: "tcp" #mqtt protocol
-  ip: "192.168.0.136" #mqtt ip address, can not use loopback address,Android can access this address
-  tcp_port: "1883" #mqtt tcp端口
-  server_port: "18083" #emq 客户端端口
-  status_topic: "device_status" #设备状态上报topic，需与安卓保持一致，不能修改
-  log_topic: "device_log" #设备日志上报topic，需与安卓保持一致，不能修改
-  version_topic: "device_version" #设备版本上报topic，需与安卓保持一致，不能修改
+  user: "admin"
+  password: "public"
+  protocol: "tcp"
+  ip: "192.168.0.136" #can not use loopback address,Android can access this address
+  tcp_port: "1883"
+  server_port: "18083"
+  status_topic: "device_status"
+  log_topic: "device_log"
+  version_topic: "device_version"
