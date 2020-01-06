@@ -98,14 +98,15 @@ resource文件夹说明：
 具体见下文
 
 
-```
+```yaml
     path:
       log_path: "logs/" #日志路径
       device_file_path: "data/device_file/" #设备相关文件路径
       person_file_path: "data/person_file/" #人员相关文件路径
     handshake_key: "ping" #用于UDP服务组播，与安卓程序保持一致
     response_key: "PONG" #用于UDP服务组播, 与安卓程序保持一致
-    begin_key: "" #用于UDP服务组播, linux,docker中请设置为“”,Windows: 值和handshake_key不同
+    task_timeout: 16 #同步等待时间
+    timing_report: false #定时上报所有设备状态
     db:
       mongo: #MongoDB
         url: "mongodb://127.0.0.1:27017" #MongoDB连接url
@@ -171,7 +172,42 @@ sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 
 3 修改.env文件内路径和端口，resource/config/config_release.yaml文件内地址、端口和key（mongo的addr端口需和.env文件内的mongo端口一致，mqtt的ip需为本机IP地址）
 
-4 运行程序 `docker-compose up -d` 运行结果如下：
+```dotenv
+mode=release #运行模式
+server_image=seetaresearch/seeta_device:v0.7 #使用镜像
+
+mongo_port=27018 #mongodb端口，覆盖配置文件设置
+mongo_db_path=./db
+mongo_user=root #mongodb用户名，覆盖配置文件设置
+mongo_password=makenosense #mongodb密码，覆盖配置文件设置
+
+emq_tcp=1883 #emq的tcp映射端口
+emq_ws=8083 #emq的ws映射端口
+emq_dashboard=18083 #emq的dashboard映射端口
+
+resource_path=./resource
+logs_path=./logs
+data_path=./data
+```
+
+4 修改配置文件(resource/config/config_release.yaml)
+
+```yaml
+handshake_key: "ping" #must same as Android's handshake_key
+response_key: "PONG" #must same as Android's response_key
+task_timeout: 16 #同步等待时间
+timing_report: false #定时上报设备状态
+mqtt:
+  ip: "192.168.0.136" #修改为emq所在的服务器地址
+```
+
+5 鉴权文件(resource/config/auth.yaml)添加业务系统ip地址
+```yaml
+ips:
+  127.0.0.1: true
+```
+
+6 运行程序 `docker-compose up -d` 运行结果如下：
 
 ![docker-compose-result](image/docker-compose-result.png)
 
