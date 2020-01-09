@@ -91,7 +91,7 @@ seetacloud_url分为如下两类：
 
 ## 3. 系统部署
 
-系统运行需要EMQ和MongoDB的支持。请提前安装服务。
+如为物理部署，系统运行需要EMQ和MongoDB的支持。请提前安装服务。
  **部署SeetaDevice**
 resource文件夹说明：
 
