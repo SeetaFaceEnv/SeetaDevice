@@ -9,7 +9,7 @@
 
 中科视拓设备管理平台是中科视拓贯彻“开源赋能共发展”的合作理念，把自身在智慧园区人脸门禁领域中的多年丰富经验，免费与合作伙伴共享，无license限制，可直接用于各商业项目中。共享的组件有：
 
-- 中科视拓智慧园区社区版[Web后端（GO）源码]((https://github.com/SeetaFaceEnv/SeetaFaceApps))、[Web前端（VUE）源码](https://github.com/SeetaFaceEnv/SeetaFaceAppsWeb)。中科视拓智慧园区社区版已含人脸门禁领域中的核心功能：人员管理、设备管理、通行时间管理和通行记录管理等。
+- 中科视拓智慧园区社区版[Web后端（GO）源码](https://github.com/SeetaFaceEnv/SeetaFaceApps)、[Web前端（VUE）源码](https://github.com/SeetaFaceEnv/SeetaFaceAppsWeb)。中科视拓智慧园区社区版已含人脸门禁领域中的核心功能：人员管理、设备管理、通行时间管理和通行记录管理等。
 - 中科视拓设备管理平台[SeetaDevice服务](https://github.com/SeetaFaceEnv/SeetaDevice)。中科视拓设备管理平台是中科视拓智能设备（门禁机/闸机伴侣，智能网关，人证一体机）的IoT服务平台，以HTTP接口方式对外提供二次开发，协助用户快速的集成、接入中科视拓智能设备，使得客户可以集中精力专注自己的业务系统研发。
 
 ### 1.2 用户价值
