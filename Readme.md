@@ -7,23 +7,41 @@
 
 ### 1.1 系统简介
 
-#### 1.1.1 系统运行说明
+中科视拓设备管理平台是中科视拓贯彻“开源赋能共发展”的合作理念，把自身在智慧园区人脸门禁领域中的多年丰富经验，免费与合作伙伴共享，无license限制，可直接用于各商业项目中。共享的组件有：
 
-* 系统依赖于Emq、MongoDB运行
-* 系统根据程序命令行参数-m选择运行模式和配置文件，支持debug,release,test
-* 系统使用可信地址文件(在resource/config/auth.yaml文件中修改ip地址)来控制请求，文件支持热更新
+- 中科视拓智慧园区社区版[Web后端（GO）源码]((https://github.com/SeetaFaceEnv/SeetaFaceApps))、[Web前端（VUE）源码](https://github.com/SeetaFaceEnv/SeetaFaceAppsWeb)。中科视拓智慧园区社区版已含人脸门禁领域中的核心功能：人员管理、设备管理、通行时间管理和通行记录管理等。
+- 中科视拓设备管理平台[SeetaDevice服务](https://github.com/SeetaFaceEnv/SeetaDevice)。中科视拓设备管理平台是中科视拓智能设备（门禁机/闸机伴侣，智能网关，人证一体机）的IoT服务平台，以HTTP接口方式对外提供二次开发，协助用户快速的集成、接入中科视拓智能设备，使得客户可以集中精力专注自己的业务系统研发。
 
+### 1.2 用户价值
 
+通过中科视拓设备管理平台，合作伙伴可以零基础也能迅速进入智慧园区人脸门禁领域；在项目前期，甚至可以零研发投入下，满足甲方需求。具体的：利用中科视拓智慧园区社区版Web后端、前端源码，迅速形成自己的业务系统；利用中科视拓设备管理平台服务，迅速搭建自己的人脸门禁机IoT平台服务。
 
-#### 1.1.2 上游业务系统（智慧园区社区版或第三方业务系统）简介
-1) 创建系统参数，设备和人员信息
-2) 设备管理平台在收到添加信息之后，验证信息并存储到数据库中，随后使用mqtt协议推送给相应的设备信息更新消息。 
+### 1.3 典型的硬件组网
 
-#### 1.1.3 智能终端软件简介
-* 平台进行udp服务监听，监听智能终端的服务发现
-* 智能终端状态变更，发送mqtt消息，平台监听topic，如果存在状态回调地址，则进行状态变更回调
-* 智能终端在收到emq推送消息后，更新该智能终端自身数据
-* 智能终端运行状态、日志上报
+![硬件组网](./image/network.png)
+
+- 第三方业务系统。合作伙伴可以充分利用中科视拓智慧园区社区版Web后端、前端源码，甚至在不改一行代码的情况下，只需加上自己的logo，更换项目名称，便可搭建起自己的业务系统。
+- 设备管理平台：支持物理和docker部署，支持公、私网部署。
+
+### 1.4 软件组件图
+
+![软件组件图](./image/software.png)
+
+### 1.5 中科视拓设备管理平台特性
+
+#### 1.5.1 IoT平台
+
+物联网（Internet of thing, IoT）需要解决的核心几个问题是设备管理，指令下发，数据获取等。中科视拓设备管理平台运用业内主流、成熟的IoT技术，满足高可用性和高扩展性。
+
+### 1.5.2 底库人员灵活性
+- 通行时间灵活：设备可以设置其通行时间。在通行时间内，设备才工作。如节假日，对于大门门禁，可以设置其不工作。大大增加安全性。
+- 人员有效期灵活：在一些场景下，人员有有效期，如访客，有拜访的有效期；如学生，有在校期间的有效期等。
+- 人员通用性：不同业务场景，对于人员属性截然不同，如对于学生有学号，对于企业有职位等等。中科视拓设备管理平台对于人员属性透明，很好的满足其通用性。
+### 1.5.3 设备管理便捷性
+- 设备组管理设备：设备组很好的管理具有相同行为和相同底库的设备。设备管理平台的请求支持以组为单位，这样设备管理平台无需挨个操作设备。
+- 设备二次鉴权：对于设备识别通过的请求，业务系统可以决定是否需要识别记录以及是否需要二次鉴权。而这，只需要设置回调地址即可。
+- 设备远程控制：设备管理平台能够给某个设备发送指令，如给特点设备发送开门指令，测试闪光点和音频等。
+- 设备远程更新：通过设备管理平台，可以远程更新设备apk。
 
 ## 2. 功能说明
 ### 2.1 系统架构
@@ -81,19 +99,17 @@ resource文件夹说明：
   resource
     └── config
         ├── auth.yaml
-        ├── config_debug.yaml
         └── config_release.yaml
 ```
 
-  auth.yaml：业务系统ip白名单，只允许名单内的业务系统访问，支持文件热更新
-  config_debug.yaml,config_release.yaml程序配置文件包含:
+  auth.yaml：业务系统ip白名单，只允许名单内的业务系统访问，支持文件热更新，支持关键字all(如all: true),\*(如192.168.0.\*: true)
+  
+  config_release.yaml程序配置文件包含:
 
     * mongodb连接配置
     * mqtt连接配置
     * udp组播接收和返回key值
     * 日志和数据文件路径
-
-  
 
 具体见下文
 
@@ -124,28 +140,7 @@ resource文件夹说明：
    
 ```
 
-1、 物理部署（根据系统选用linux或者Windows的二进制文件） 
-
-
-   ```
-   运行程序之前需修改resource文件夹内配置文件和权限文件。
-   二进制文件与resource文件夹需在同级目录运行。
-   程序依赖于mongodb,emq运行，需提前安装mongodb和emq。
- 
-   命令说明：
-   版本显示：<binary_file> version
-   http服务：<binary_file> server -m <mode> -p <port>
-   udp组播服务：<binary_file> multicast -m <mode> -p <port> -a <addr>
-   定时脚本：<binary_file> timing -m <mode>
-   
-   参数说明：
-   <binary_file>:运行的二进制文件
-   <mode>:运行的模式，支持debug,release，没有此参数默认为debug，根据不同的模式选用不同的配置文件
-   <port>:监听端口，udp组播端口必须与http服务端口相同，如果不同则组播服务必须指定-a参数
-   <addr>:udp组播返回安卓的地址，如果两者端口或ip不同，则必须指定该地址，如:127.0.0.1:7878
-   ```
-
-2、 docker-compose部署 
+1、 docker-compose部署 
 
 1 部署docker
 ```bash
@@ -153,7 +148,6 @@ resource文件夹说明：
 sudo yum install -y yum-utils device-mapper-persistent-data lvm2
 sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
 sudo yum makecache fast
-
 
 yum list docker-ce --showduplicates | sort -r #查看可用版本
 sudo yum install docker-ce-<VERSION STRING> # 安装19.03版本
@@ -170,11 +164,11 @@ sudo chmod +x /usr/local/bin/docker-compose
 sudo ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
 ```
 
-3 修改.env文件内路径和端口，resource/config/config_release.yaml文件内地址、端口和key（mongo的addr端口需和.env文件内的mongo端口一致，mqtt的ip需为本机IP地址）
+3 修改.env文件内路径和端口
 
 ```dotenv
 mode=release #运行模式
-server_image=seetaresearch/seeta_device:v0.7 #使用镜像
+server_image=seetaresearch/seeta_device:v0.7.beta #使用镜像
 
 mongo_port=27018 #mongodb端口，覆盖配置文件设置
 mongo_db_path=./db
@@ -197,6 +191,9 @@ handshake_key: "ping" #must same as Android's handshake_key
 response_key: "PONG" #must same as Android's response_key
 task_timeout: 16 #同步等待时间
 timing_report: false #定时上报设备状态
+db:
+  mongo:
+    addr: "127.0.0.1:27017" #mongo连接地址，需和.env文件内的mongo端口一致
 mqtt:
   ip: "192.168.0.136" #修改为emq所在的服务器地址
 ```
@@ -210,6 +207,32 @@ ips:
 6 运行程序 `docker-compose up -d` 运行结果如下：
 
 ![docker-compose-result](image/docker-compose-result.png)
+
+2、 物理部署（根据系统选用linux或者Windows的二进制文件） 
+
+1 修改配置文件(resource/config/config_release.yaml)
+
+配置文件具体信息见系统部署配置文件说明
+
+2 运行程序
+
+   ```
+   运行程序之前需修改resource文件夹内配置文件和权限文件。
+   二进制文件与resource文件夹需在同级目录运行。
+   程序依赖于mongodb,emq运行，需提前安装mongodb和emq。
+ 
+   命令说明：
+   版本显示：<binary_file> version
+   http服务：<binary_file> server -m <mode> -p <port>
+   udp组播服务：<binary_file> multicast -m <mode> -p <port> -a <addr>
+   定时脚本：<binary_file> timing -m <mode>
+   
+   参数说明：
+   <binary_file>:运行的二进制文件
+   <mode>:运行的模式，支持debug,release，没有此参数默认为debug，根据不同的模式选用不同的配置文件
+   <port>:监听端口，udp组播端口必须与http服务端口相同，如果不同则组播服务必须指定-a参数
+   <addr>:udp组播返回安卓的地址，如果两者端口或ip不同，则必须指定该地址，如:127.0.0.1:7878
+   ```
 
 ## 4. 系统接口文档
 
@@ -236,5 +259,22 @@ Postman-Token: de2ccdbf-306a-4bec-977d-1bf1fa76eb51
 
 * [中科视拓设备管理平台接口文档](./api.md)
 
+# 5. 视拓智能终端设备
 
+## 5.1 门禁机/闸机伴侣
 
+|硬件说明|产品图|
+|---|---|
+|型号：K-Y3 <br>CPU：瑞芯微3288<br>摄像头：双目（一目可见光，一目红网光）<br>屏幕：7英寸触摸屏/非触摸屏<br>客户端模式：强<br>存储：8GB<br>内存：2GB<br>外观尺寸：138MM * 245MM * 37MM<br>控制方式：<br>•	开关量输出<br>•	RS485<br>•	门磁检测<br>• 消防联动<br>产品执行标准：<br>• GA/T 394-2002 出入口控制系统技术要求<br>• GA/T 1260-2016 人行出入口电控通道闸通用技术要求<br>• GA/T 18239-2000 集成电路(IC)卡读写机通用规范|![门禁机](./image/access_machine.png)|
+
+## 5.2 智能网关
+
+|硬件说明|产品图|
+|---|---|
+|型号：906N-T3<br>CPU：双核Cortex-A72+四核Cortex-A53，大小核CPU结构，主频最高1.8GHz<br>客户端模式：强<br>存储：16GB<br>内存：2GB+1GB（2GB for CPU, 1GB for NPU）<br>外观尺寸：100MM * 160MM * 30MM<br>支持路数：<br>• 1080P RTSP流：4路<br>控制方式：<br>• 开关量输出<br>• RS485|![安卓智能网关](./image/android_gateway.png)|
+
+## 5.3 人证一体机
+
+|硬件说明|产品图|
+|---|---|
+|型号：905K-Y1<br>CPU：瑞芯微3288<br>摄像头：单目<br>屏幕：10.1英寸彩色液晶显示屏<br>客户端模式：强<br>存储：8GB<br>内存：2GB<br>外观尺寸：26CM * 23CM * 29CM<br>产品执行标准：<br>• GA/T 1903-2013 出入口控制人脸识别系统技术要求|![人证一体机](./image/card_machine.png)|
