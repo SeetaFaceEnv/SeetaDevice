@@ -59,9 +59,9 @@ seetacloud_url|seeta cloud 地址|string|当前使用的seeta cloud 地址
 min_face|最小人脸宽度|int64|人脸检测最小人脸宽度
 min_clarity|清晰度阈值|float64|0&lt;值&lt;=1
 max_angle|最大识别人脸角度|float64|人脸倾斜角度，值&gt;0
-handshake_key|string|组播请求的key
-handshake_response|string|组播应答key
-status_callback_cycle|int64|定时上报时长(s)
+handshake_key|组播请求key|string|组播请求的key
+handshake_response|组播应答key|string|组播应答key
+status_callback_cycle|定时上报时长|int64|定时上报时长(s)
 
 #### 1.1.3 系统重置
 恢复出厂设置（安卓设备和平台删除设备信息、人员信息、任务执行信息）
